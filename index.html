@@ -34,54 +34,30 @@
             font-weight: 500;
             color: var(--sub-color);
             margin-bottom: 4px;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em; /* 少し広げて読みやすく */
         }
         .time-display {
-            font-size: 48px;
+            font-size: 56px; /* 少し大きめに調整 */
             font-weight: 700;
             font-variant-numeric: tabular-nums;
             line-height: 1;
-        }
-        .seconds {
-            font-size: 24px;
-            margin-left: 4px;
-            opacity: 0.7;
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="date-row" id="date-row">0000/00/00 WED</div>
-        <div class="time-display">
-            <span id="clock-text">00:00</span><span class="seconds" id="seconds-text">:00</span>
-        </div>
+        <div class="time-display" id="time-display">00:00:00</div>
     </div>
 
     <script>
         function updateClock() {
             const now = new Date();
 
-            // 日付と曜日の更新（カッコなし、スペース空け）
+            // 日付と曜日の更新
             const y = now.getFullYear();
             const m = String(now.getMonth() + 1).padStart(2, '0');
             const d = String(now.getDate()).padStart(2, '0');
             const dayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-            const dayName = dayList[now.getDay()];
-            
-            // 例: 2026/04/16 THU
-            document.getElementById('date-row').innerText = `${y}/${m}/${d}  ${dayName}`;
-
-            // 時間の更新
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            const ss = String(now.getSeconds()).padStart(2, '0');
-            
-            document.getElementById('clock-text').innerText = `${hh}:${mm}`;
-            document.getElementById('seconds-text').innerText = `:${ss}`;
-        }
-
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
-</body>
-</html>
+            const
