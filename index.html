@@ -29,34 +29,29 @@
         .container {
             text-align: center;
         }
-        .top-row {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
+        .date-row {
             font-size: 14px;
             font-weight: 500;
             color: var(--sub-color);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            letter-spacing: 0.05em;
         }
         .time-display {
             font-size: 48px;
             font-weight: 700;
-            font-variant-numeric: tabular-nums; /* 数字の幅を固定してガタつきを防止 */
+            font-variant-numeric: tabular-nums;
             line-height: 1;
         }
         .seconds {
             font-size: 24px;
             margin-left: 4px;
-            opacity: 0.8;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="top-row">
-            <div id="date-text">0000/00/00</div>
-            <div id="weather-text">☁️ Weather</div>
-        </div>
+        <div class="date-row" id="date-row">0000/00/00 WED</div>
         <div class="time-display">
             <span id="clock-text">00:00</span><span class="seconds" id="seconds-text">:00</span>
         </div>
@@ -66,13 +61,15 @@
         function updateClock() {
             const now = new Date();
 
-            // 日付の更新
+            // 日付と曜日の更新（カッコなし、スペース空け）
             const y = now.getFullYear();
             const m = String(now.getMonth() + 1).padStart(2, '0');
             const d = String(now.getDate()).padStart(2, '0');
-            const dayList = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const dayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
             const dayName = dayList[now.getDay()];
-            document.getElementById('date-text').innerText = `${y}/${m}/${d} (${dayName})`;
+            
+            // 例: 2026/04/16 THU
+            document.getElementById('date-row').innerText = `${y}/${m}/${d}  ${dayName}`;
 
             // 時間の更新
             const hh = String(now.getHours()).padStart(2, '0');
@@ -83,7 +80,6 @@
             document.getElementById('seconds-text').innerText = `:${ss}`;
         }
 
-        // 1秒ごとに実行
         setInterval(updateClock, 1000);
         updateClock();
     </script>
