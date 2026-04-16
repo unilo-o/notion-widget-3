@@ -33,11 +33,11 @@
             font-size: 14px;
             font-weight: 500;
             color: var(--sub-color);
-            margin-bottom: 4px;
-            letter-spacing: 0.1em; /* 少し広げて読みやすく */
+            margin-bottom: 6px;
+            letter-spacing: 0.1em;
         }
         .time-display {
-            font-size: 56px; /* 少し大きめに調整 */
+            font-size: 56px;
             font-weight: 700;
             font-variant-numeric: tabular-nums;
             line-height: 1;
@@ -47,17 +47,36 @@
 </head>
 <body>
     <div class="container">
-        <div class="date-row" id="date-row">0000/00/00 WED</div>
-        <div class="time-display" id="time-display">00:00:00</div>
+        <div class="date-row" id="date-row">LOADING...</div>
+        <div class="time-display" id="time-display">--:--:--</div>
     </div>
 
     <script>
         function updateClock() {
             const now = new Date();
 
-            // 日付と曜日の更新
+            // 日付の取得
             const y = now.getFullYear();
             const m = String(now.getMonth() + 1).padStart(2, '0');
             const d = String(now.getDate()).padStart(2, '0');
             const dayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-            const
+            const dayName = dayList[now.getDay()];
+            
+            // 時間の取得
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+
+            // 画面への反映
+            document.getElementById('date-row').innerText = `${y}/${m}/${d}  ${dayName}`;
+            document.getElementById('time-display').innerText = `${hh}:${mm}:${ss}`;
+        }
+
+        // ページを読み込んだ瞬間に1回実行
+        updateClock();
+        
+        // その後1秒（1000ミリ秒）ごとにずっと実行
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
