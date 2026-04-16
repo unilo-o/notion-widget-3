@@ -7,14 +7,12 @@
         :root {
             --bg-color: transparent;
             --text-color: #37352f;
-            --bar-bg: #e9e9e8;
-            --bar-fill: #37352f;
+            --sub-color: #a0a0a0;
         }
         @media (prefers-color-scheme: dark) {
             :root {
                 --text-color: #ffffff;
-                --bar-bg: #3f3f3f;
-                --bar-fill: #ffffff;
+                --sub-color: #8a8a8a;
             }
         }
         body {
@@ -23,60 +21,71 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             overflow: hidden;
         }
         .container {
-            width: 90%;
-            max-width: 400px;
+            text-align: center;
         }
-        .header {
+        .top-row {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .title {
+            justify-content: center;
+            gap: 15px;
             font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
+            font-weight: 500;
+            color: var(--sub-color);
+            margin-bottom: 5px;
         }
-        .percentage {
-            font-size: 16px;
+        .time-display {
+            font-size: 48px;
             font-weight: 700;
+            font-variant-numeric: tabular-nums; /* 数字の幅を固定してガタつきを防止 */
+            line-height: 1;
         }
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background-color: var(--bar-bg);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        #bar-fill {
-            height: 100%;
-            background-color: var(--bar-fill);
-            width: 0%;
-            transition: width 0.3s ease-out;
+        .seconds {
+            font-size: 24px;
+            margin-left: 4px;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="title">Today</div>
-            <div class="percentage" id="percent-text">0%</div>
+        <div class="top-row">
+            <div id="date-text">0000/00/00</div>
+            <div id="weather-text">☁️ Weather</div>
         </div>
-        <div class="progress-bar">
-            <div id="bar-fill"></div>
+        <div class="time-display">
+            <span id="clock-text">00:00</span><span class="seconds" id="seconds-text">:00</span>
         </div>
     </div>
 
     <script>
-        function updateDayProgress() {
+        function updateClock() {
             const now = new Date();
-            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+            // 日付の更新
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const dayList = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const dayName = dayList[now.getDay()];
+            document.getElementById('date-text').innerText = `${y}/${m}/${d} (${dayName})`;
+
+            // 時間の更新
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
             
-            // 1日の総ミリ秒数 (24時間)
-            const totalMs = 24 * 6
+            document.getElementById('clock-text').innerText = `${hh}:${mm}`;
+            document.getElementById('seconds-text').innerText = `:${ss}`;
+        }
+
+        // 1秒ごとに実行
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
